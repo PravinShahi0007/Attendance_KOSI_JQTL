@@ -102,7 +102,7 @@ namespace Attendance.Classes
         {
            
             var clientoptions = new MqttClientOptionsBuilder()
-            .WithTcpServer(Globals.G_ServerWorkerIP, 1884) // Port is optional
+            .WithTcpServer(Globals.G_ServerWorkerIP, 1885) // Port is optional
             .Build();
 
             mqtc = new MqttFactory().CreateMqttClient();
@@ -134,7 +134,7 @@ namespace Attendance.Classes
             // Configure MQTT server.
             var serveroptionsBuilder = new MqttServerOptionsBuilder()
                 .WithConnectionBacklog(100)
-                .WithDefaultEndpointPort(1884)
+                .WithDefaultEndpointPort(1885)
                 .WithDefaultEndpointBoundIPAddress(serverip)
                 .Build();
             mqts = new MqttFactory().CreateMqttServer();
@@ -1219,17 +1219,11 @@ namespace Attendance.Classes
                 Scheduler.Publish(tMsg);
 
                 
-                if (_StatusAutoArrival == false && 
-                    _StatusAutoDownload == false && 
-                    _StatusAutoProcess == false && 
-                    _StatusAutoTimeSet == false && 
-                    _StatusWorker == false)
+                if (_StatusWorker == false)
                 {
 
-
-
                     string cnerr = string.Empty;
-                    string sql = "Select top 100 w.* from attdworker w where w.doneflg = 0 Order by MsgId desc" ;
+                    string sql = "Select top 200 w.* from attdworker w where w.doneflg = 0 Order by MsgId desc" ;
                     DataSet DsEmp = Utils.Helper.GetData(sql, Utils.Helper.constr,out cnerr);
                     if (!string.IsNullOrEmpty(cnerr))
                     {
@@ -1241,7 +1235,7 @@ namespace Attendance.Classes
                     if (hasRows)
                     {
 
-                        clsProcess pro = new clsProcess();
+                        
 
                         foreach (DataRow dr in DsEmp.Tables[0].Rows)
                         {
@@ -1269,6 +1263,7 @@ namespace Attendance.Classes
 
                             string err = string.Empty;
                             int tres = 0;
+                            clsProcess pro = new clsProcess();
                             pro.AttdProcess(tEmpUnqID, tFromDt, tToDt, out tres, out err);
 
                             if (!string.IsNullOrEmpty(err))
