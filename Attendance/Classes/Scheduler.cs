@@ -102,7 +102,7 @@ namespace Attendance.Classes
         {
            
             var clientoptions = new MqttClientOptionsBuilder()
-            .WithTcpServer(Globals.G_ServerWorkerIP, 1885) // Port is optional
+            .WithTcpServer(Globals.G_ServerWorkerIP, 1884) // Port is optional
             .Build();
 
             mqtc = new MqttFactory().CreateMqttClient();
@@ -134,7 +134,7 @@ namespace Attendance.Classes
             // Configure MQTT server.
             var serveroptionsBuilder = new MqttServerOptionsBuilder()
                 .WithConnectionBacklog(100)
-                .WithDefaultEndpointPort(1885)
+                .WithDefaultEndpointPort(1884)
                 .WithDefaultEndpointBoundIPAddress(serverip)
                 .Build();
             mqts = new MqttFactory().CreateMqttServer();
@@ -813,7 +813,7 @@ namespace Attendance.Classes
                 bool hasRows = DsEmp.Tables.Cast<DataTable>().Any(table => table.Rows.Count != 0);
                 if (hasRows)
                 {
-                    clsProcess pro = new clsProcess();
+                    
 
                     string filenminfo = "AutoProcess_Info_" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
                     string fullpath2 = Path.Combine(Loginfopath, filenminfo);
@@ -829,6 +829,8 @@ namespace Attendance.Classes
                             return;
                         }
 
+                        
+
                         _StatusAutoProcess = true;
                         
                         string tEmpUnqID = dr["EmpUnqID"].ToString();
@@ -841,6 +843,7 @@ namespace Attendance.Classes
                         
                         string err = string.Empty;
                         int tres = 0;
+                        clsProcess pro = new clsProcess();
                         pro.AttdProcess(tEmpUnqID,FromDt,ToDt,out tres,out err);
 
                         if (!string.IsNullOrEmpty(err))
@@ -851,7 +854,7 @@ namespace Attendance.Classes
                             string fullpath = Path.Combine(Errfilepath, filenm);
                             using (System.IO.StreamWriter file = new System.IO.StreamWriter(fullpath, true))
                             {
-                                file.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "-AutoProcess-[" + tEmpUnqID + "]- From : " + FromDt.ToString("dd/MM/yy") + "-" + ToDt.ToString("dd/MM/yy") + " " + err);
+                                file.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "-AutoProcess-[" + tEmpUnqID + "]- From :" + FromDt.ToString("dd/MM/yy") + "-" + ToDt.ToString("dd/MM/yy") + " " + err);
                             }
 
                             tMsg.MsgTime = DateTime.Now;
