@@ -47,7 +47,7 @@ namespace Attendance.Classes
         {
             if (!scheduler.IsStarted)
             {
-
+                
                 //attach job listener if required...
                 if (Globals.G_JobNotificationFlg && !string.IsNullOrEmpty(Globals.G_JobNotificationEmail))
                 {
@@ -151,6 +151,8 @@ namespace Attendance.Classes
         {   
            var properties = new System.Collections.Specialized.NameValueCollection();
             properties["quartz.threadPool.threadCount"] = "20";
+            properties["org.quartz.scheduler.instanceName"] = "QuartzSchedulerJQTL";
+            properties["org.quartz.scheduler.instanceId"] = "NON_CLUSTERED_JQTL";
 
             StdSchedulerFactory schedulerFactory = new StdSchedulerFactory(properties); //getting the scheduler factory
             scheduler = schedulerFactory.GetScheduler();//getting the instance
