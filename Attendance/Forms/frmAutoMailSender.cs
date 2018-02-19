@@ -88,6 +88,12 @@ namespace Attendance.Forms
         {
             
             bool userok = GetUserVerify();
+
+            if (Utils.User.GUserID == "SERVER")
+            {
+                userok = true;
+            }
+
             bool sqlok = BuildSQL();
             if (!userok)
                 return;
