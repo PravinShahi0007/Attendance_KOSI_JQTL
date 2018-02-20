@@ -221,7 +221,7 @@ namespace Attendance.Forms
                         break; /* optional */
 
                     case "Daily Performance Report":
-                        reportPath = "JQTL/Attendance/Automail Reports/New Daily Performance Report With Date Para";
+                        reportPath = "JQTL/Attendance/Automail Reports/Daily Performance Report WDPara";
                         rsExec.LoadReport(reportPath, historyID);
                         ParameterValue[] executionParams1 = new ParameterValue[3];
                         executionParams1[0] = new ParameterValue();
