@@ -193,7 +193,7 @@ namespace Attendance.Forms
                         
 
                     case "Monthly Attendance Report":
-                        reportPath = "JQTL/Attendance/Automail Reports/Monthly Attendance Report";
+                        reportPath = "/JQTL/Attendance/Automail Reports/Monthly Attendance Report";
                         rsExec.LoadReport(reportPath, historyID);
                         ParameterValue[] executionParams = new ParameterValue[4];
                         executionParams[0] = new ParameterValue();
@@ -221,7 +221,7 @@ namespace Attendance.Forms
                         break; /* optional */
 
                     case "Daily Performance Report":
-                        reportPath = "JQTL/Attendance/Automail Reports/Daily Performance Report WDPara";
+                        reportPath = "/JQTL/Attendance/Automail Reports/Daily Performance Report WDPara";
                         rsExec.LoadReport(reportPath, historyID);
                         ParameterValue[] executionParams1 = new ParameterValue[3];
                         executionParams1[0] = new ParameterValue();
@@ -244,7 +244,7 @@ namespace Attendance.Forms
 
                         break; /* optional */
                     case "Monthly Lunch Halfday Report":
-                        reportPath = "JQTL/Attendance/Automail Reports/Monthly Lunch Halfday Report";
+                        reportPath = "/JQTL/Attendance/Automail Reports/Monthly Lunch Halfday Report";
                         rsExec.LoadReport(reportPath, historyID);
                         ParameterValue[] executionParams2 = new ParameterValue[4];
                         executionParams2[0] = new ParameterValue();
