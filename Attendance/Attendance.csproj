@@ -738,6 +738,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Attendance_TemporaryKey.pfx" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
