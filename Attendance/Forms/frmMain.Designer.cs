@@ -43,6 +43,7 @@
             this.mnuMastShift = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMastLeave = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMessInOutMachine = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuCopyWrkGrpToOther = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDomainConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuOtherConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuUser = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,6 +74,7 @@
             this.mnuImportEmp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuValidityMass = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMisConduct = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuMastException = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMess = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMastMessGrp = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMastFood = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,7 +119,6 @@
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.stsUserDesc = new System.Windows.Forms.ToolStripStatusLabel();
             this.stsExtra = new System.Windows.Forms.ToolStripStatusLabel();
-            this.mnuMastException = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -178,6 +179,7 @@
             this.mnuConfig.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuMastComp,
             this.mnuMastWrkGrp,
+            this.mnuCopyWrkGrpToOther,
             this.mnuMastUnit,
             this.mnuMessConfig,
             this.MnuReaderConfig,
@@ -252,6 +254,13 @@
             this.mnuMessInOutMachine.Size = new System.Drawing.Size(269, 22);
             this.mnuMessInOutMachine.Text = "Mess In-Out and Time Configuration";
             this.mnuMessInOutMachine.Click += new System.EventHandler(this.mnuMessInOutMachine_Click);
+            // 
+            // mnuCopyWrkGrpToOther
+            // 
+            this.mnuCopyWrkGrpToOther.Name = "mnuCopyWrkGrpToOther";
+            this.mnuCopyWrkGrpToOther.Size = new System.Drawing.Size(269, 22);
+            this.mnuCopyWrkGrpToOther.Text = "Copy WorkGrp From Other";
+            this.mnuCopyWrkGrpToOther.Click += new System.EventHandler(this.mnuCopyWrkGrpToOther_Click);
             // 
             // mnuDomainConfig
             // 
@@ -490,6 +499,13 @@
             this.mnuMisConduct.Size = new System.Drawing.Size(184, 22);
             this.mnuMisConduct.Text = "MisConduct Register";
             this.mnuMisConduct.Click += new System.EventHandler(this.mnuMisConduct_Click);
+            // 
+            // mnuMastException
+            // 
+            this.mnuMastException.Name = "mnuMastException";
+            this.mnuMastException.Size = new System.Drawing.Size(184, 22);
+            this.mnuMastException.Text = "Exception Master";
+            this.mnuMastException.Click += new System.EventHandler(this.mnuMastException_Click);
             // 
             // mnuMess
             // 
@@ -831,13 +847,6 @@
             this.stsExtra.Name = "stsExtra";
             this.stsExtra.Size = new System.Drawing.Size(0, 17);
             // 
-            // mnuMastException
-            // 
-            this.mnuMastException.Name = "mnuMastException";
-            this.mnuMastException.Size = new System.Drawing.Size(184, 22);
-            this.mnuMastException.Text = "Exception Master";
-            this.mnuMastException.Click += new System.EventHandler(this.mnuMastException_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -953,6 +962,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuMastStatSec;
         private System.Windows.Forms.ToolStripMenuItem mnuMastHolidayOpt;
         private System.Windows.Forms.ToolStripMenuItem mnuMastException;
+        private System.Windows.Forms.ToolStripMenuItem mnuCopyWrkGrpToOther;
 
 
     }
