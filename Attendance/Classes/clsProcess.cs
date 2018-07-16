@@ -435,6 +435,8 @@ namespace Attendance
                                         drAttd["ConsOut"] = DBNull.Value;
                                     }
 
+                                    
+
                                     daAttdData.Update(dsAttdData, "AttdData");
 
                                     #endregion SanctionOutTime
@@ -556,11 +558,16 @@ namespace Attendance
                                             daAttdData.Update(dsAttdData, "AttdData");
                                         }
                                     }
+
+
+
+
                                     #endregion Double_Check_ConsOut
+
 
                                     //## 07-04-2018 Commit AutoOut.. Corrected 12/04/2018->Consider FixShift and AutoShift Employee
                                     #region AutoOut
-
+                                   
                                     if (drAttd["ConsOut"] == DBNull.Value && drAttd["ConsIn"] != DBNull.Value)
                                     {
                                         //check if Emp has auto out exception
@@ -578,17 +585,17 @@ namespace Attendance
                                                 {
                                                     //if employee in auto shift
                                                     tmpsql = "SELECT [ShiftStart] FROM [MastShift] where '" + tmpInTime + "' between ShiftINFrom and ShiftINTo order by shiftend desc";
-                                                    tmpStartTime = Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr, out err);
+                                                    tmpStartTime = Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr,out err);
                                                     tmpsql = "SELECT [ShiftHrs] FROM [MastShift] where '" + tmpInTime + "' between ShiftINFrom and ShiftINTo order by shiftend desc";
-                                                    tmpShiftHours = Convert.ToDouble(Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr, out err));
+                                                    tmpShiftHours = Convert.ToDouble(Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr,out err));
                                                 }
                                                 else if (!string.IsNullOrEmpty(drAttd["ScheDuleShift"].ToString()))
                                                 {
                                                     //if employee in fixshift...
                                                     tmpsql = "SELECT [ShiftStart] FROM [MastShift] where ShiftCode = '" + drAttd["ScheDuleShift"].ToString() + "' order by shiftend desc";
-                                                    tmpStartTime = Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr, out err);
+                                                    tmpStartTime = Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr,out err);
                                                     tmpsql = "SELECT [ShiftHrs] FROM [MastShift] where ShiftCode = '" + drAttd["ScheDuleShift"].ToString() + "' order by shiftend desc";
-                                                    tmpShiftHours = Convert.ToDouble(Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr, out err));
+                                                    tmpShiftHours = Convert.ToDouble(Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr,out err));
                                                 }
                                             }
                                             else
@@ -597,19 +604,19 @@ namespace Attendance
                                                 if (Emp.AutoShift)
                                                 {
                                                     tmpsql = "SELECT [ShiftStart] FROM [MastShift] where '" + tmpInTime + "' between ShiftINFrom and ShiftINTo order by shiftend desc";
-                                                    tmpStartTime = Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr, out err);
+                                                    tmpStartTime = Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr,out err);
                                                     tmpsql = "SELECT [ShiftHrs] FROM [MastShift] where '" + tmpInTime + "' between ShiftINFrom and ShiftINTo order by shiftend desc";
-                                                    tmpShiftHours = Convert.ToDouble(Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr, out err));
+                                                    tmpShiftHours = Convert.ToDouble(Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr,out err));
                                                 }
                                                 else
                                                 {
                                                     tmpsql = "SELECT [ShiftStart] FROM [MastShift] where ShiftCode = '" + Emp.ShiftCode + "' order by shiftend desc";
-                                                    tmpStartTime = Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr, out err);
+                                                    tmpStartTime = Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr,out err);
                                                     tmpsql = "SELECT [ShiftHrs] FROM [MastShift] where ShiftCode = '" + Emp.ShiftCode + "' order by shiftend desc";
-                                                    tmpShiftHours = Convert.ToDouble(Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr, out err));
+                                                    tmpShiftHours = Convert.ToDouble(Utils.Helper.GetDescription(tmpsql, Utils.Helper.constr,out err));
                                                 }
                                             }
-
+ 
 
                                             DateTime t2intime = Convert.ToDateTime(tmpDate + " " + tmpStartTime).AddHours(tmpShiftHours);
                                             DateTime tSanDate = Convert.ToDateTime(t2intime.ToString("yyyy-MM-dd"));
@@ -814,6 +821,7 @@ namespace Attendance
                                         drAttd["ActualStatus"] = "P";
                                     }
 
+                                    
                                     //bugfix : 07/04/2018 : Reset Sanction ot if status is absent and makesure to round it
                                     if (drAttd["Status"].ToString() == "A")
                                     {
@@ -823,7 +831,7 @@ namespace Attendance
                                     else
                                     {
                                         //bugfix : 02/05/2018 : Sanction Ot on WO also considered if employee did not come.
-                                        if (!string.IsNullOrEmpty(drAttd["ConsIn"].ToString()) && !string.IsNullOrEmpty(drAttd["ConsOut"].ToString()))
+                                        if(!string.IsNullOrEmpty(drAttd["ConsIn"].ToString()) && !string.IsNullOrEmpty(drAttd["ConsOut"].ToString()) )
                                         {
                                             double Overtime = 0;
                                             Overtime = Convert.ToDouble(drAttd["ConsOverTime"]);
@@ -838,8 +846,8 @@ namespace Attendance
                                             drAttd["ConsOverTime"] = 0;
                                         }
                                         //02/05/2018
+                                        
                                     }
-
 
                                     daAttdData.Update(dsAttdData, "AttdData");
 
@@ -1027,6 +1035,7 @@ namespace Attendance
         public void CalcShiftOT(SqlDataAdapter daAttdData, DataSet dsAttdData, DataRow drAttd, clsEmp Emp, string tSchShift, out string err)
         {
             err = string.Empty;
+            
             try
             {
 
@@ -1116,6 +1125,17 @@ namespace Attendance
                 {
                     #region AutoSiftCalc
                     // Create DataView
+
+                    #region prefered_shift_1
+                        string tsamesql = "select ShiftCode from MastShift where ShiftStart in (SELECT [ShiftStart] FROM [MastShift] group by CompCode,ShiftStart having count(*) >= 2)" ;
+                        DataSet DsSameShift = Utils.Helper.GetData(tsamesql, Utils.Helper.constr);
+                        string tsameshift = string.Empty;
+                        foreach (DataRow dr in DsSameShift.Tables[0].Rows)
+                        {
+                            tsameshift += dr["ShiftCode"].ToString() + ",";
+                        }
+                    #endregion
+
                     DataView dvShift = new DataView(Globals.dtShift);
                     dvShift.Sort = "ShiftSeq ASC";
 
@@ -1287,30 +1307,59 @@ namespace Attendance
                                     daAttdData.Update(dsAttdData, "AttdData");
                                 }
 
-                                #region Fix_For_GI_SMG
-                                if (drAttd["ConsShift"].ToString() == "DD")
+                                
+
+                                #region prefered_shift_2
+                                if (tsameshift.Contains(drAttd["ConsShift"].ToString()))
                                 {
-                                    //if (Convert.ToDateTime(drAttd["ConsOut"]) >= ShiftOutFrom && Convert.ToDateTime(drAttd["ConsOut"]) <= ShiftOutTo)
-                                    if(Emp.OTFLG)
-                                    {
-                                        drAttd["ConsShift"] = "DD";
-                                        daAttdData.Update(dsAttdData, "AttdData");
-                                    }
-                                    else
-                                    {
-                                        drAttd["ConsShift"] = "GI";
+                                    //find the prefered shift
+                                    tsamesql = "select isnull(PreferedShifts,'') as t  from MastException where Empunqid = '" + drAttd["EmpUnqID"].ToString() + "'";
+                                    string tmperr = string.Empty;
+                                    string tPreferedShift = Utils.Helper.GetDescription(tsamesql, Utils.Helper.constr,out tmperr);
 
-                                        DataRow[] drs = Globals.dtShift.Select("ShiftCode = 'GI'");
-                                        foreach (DataRow tdr in drs)
+                                    if(!string.IsNullOrEmpty(tPreferedShift))                                        
+                                    {
+                                        if(tPreferedShift  != drAttd["ConsShift"].ToString() )
                                         {
-                                            ShiftHrs = Convert.ToDouble(tdr["Shifthrs"]);
-                                            ShiftEnd = ShiftStart.AddHours(ShiftHrs);
-                                            ShiftBreak = Convert.ToInt32(tdr["BreakHrs"]);
+                                            drAttd["ConsShift"] = tPreferedShift;
+                                            DataRow[] drs = Globals.dtShift.Select("ShiftCode = '" + tPreferedShift + "'");
+                                            foreach (DataRow tdr in drs)
+                                            {
+                                                ShiftHrs = Convert.ToDouble(tdr["Shifthrs"]);
+                                                ShiftEnd = ShiftStart.AddHours(ShiftHrs);
+                                                ShiftBreak = Convert.ToDouble(tdr["BreakHrs"]);
+                                            }
+                                            daAttdData.Update(dsAttdData, "AttdData");
                                         }
-                                        daAttdData.Update(dsAttdData, "AttdData");
                                     }
-
                                 }
+
+
+                                #endregion prefered_shift_2
+
+                                #region Fix_For_GI_SMG
+                                //if (drAttd["ConsShift"].ToString() == "DD")
+                                //{
+                                //    //if (Convert.ToDateTime(drAttd["ConsOut"]) >= ShiftOutFrom && Convert.ToDateTime(drAttd["ConsOut"]) <= ShiftOutTo)
+                                //    if (Emp.OTFLG)
+                                //    {
+                                //        drAttd["ConsShift"] = "DD";
+                                //        daAttdData.Update(dsAttdData, "AttdData");
+                                //    }
+                                //    else
+                                //    {
+                                //        drAttd["ConsShift"] = "GI";
+                                //        DataRow[] drs = Globals.dtShift.Select("ShiftCode = 'GI'");
+                                //        foreach (DataRow tdr in drs)
+                                //        {
+                                //            ShiftHrs = Convert.ToDouble(tdr["Shifthrs"]);
+                                //            ShiftEnd = ShiftStart.AddHours(ShiftHrs);
+                                //            ShiftBreak = Convert.ToDouble(tdr["BreakHrs"]);
+                                //        }
+                                //        daAttdData.Update(dsAttdData, "AttdData");
+                                //    }
+
+                                //}
                                 #endregion Fix_For_GI_SMG
 
                                 #region Set_EarlyGoing
@@ -2119,7 +2168,6 @@ namespace Attendance
                         //    ot = othrs + 0.5;
                         //}
                         //else 
-                        
                         if (otmin > 50 && otmin <= 59)
                         {
                             ot = othrs + 1;
@@ -2165,8 +2213,6 @@ namespace Attendance
                         //    ot = othrs + 0.5;
                         //}
                         //else 
-                            
-                            
                         if (otmin > 50 && otmin <= 59)
                         {
                             ot = othrs + 1;
